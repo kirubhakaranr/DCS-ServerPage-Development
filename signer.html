@@ -1,0 +1,622 @@
+<!DOCTYPE html><html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><title>Digital Certificate Signer</title><link rel="shortcut icon" type="image/ico" href="assets/img/favicon.ico"><link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css"><link rel="stylesheet" href="assets/animation/heart.css"><script type="text/javascript" src="assets/google/jquery.min.js"></script><script type="text/javascript" src="assets/bootstrap/js/bootstrap.min.js"></script><script src="js/asn1js/int10.js"></script><script src="js/asn1js/base64.js"></script><script src="js/asn1js/hex.js"></script><script src="js/asn1js/asn1.js"></script><style type="text/css">html::-webkit-scrollbar{display:none;}body{font-family:'Century Gothic',sans-serif;height:100%;width:100%;}.navbar{border-radius:0;margin:0;border-bottom:dashed;background-color:#FFFFFF;}.navbar-inverse .navbar-brand{color:#2C3E50;text-shadow:0px 0px 8px 0 rgba(0,0,0,0.2);}.navbar-inverse .navbar-brand:hover{color:#2C3E50;cursor:pointer;}.navbar-inverse .navbar-nav>li>a{color:#2C3E50;}.navbar-inverse .navbar-nav>li>a:hover{color:#34495E;}.navbar-inverse .navbar-nav>.active>a,.navbar-inverse .navbar-nav>.active>a:focus,.navbar-inverse .navbar-nav>.active>a:hover{color:#4EDFC2;background-color:#FFFFFF;}.navbar-inverse .navbar-collapse, .navbar-inverse .navbar-form{border: none;}.navbar-inverse .navbar-toggle{border:none;background-color:#2C3E50;}.navbar-inverse .navbar-toggle:hover{border:none;background-color:#34495E;cursor:pointer;}.jumbotron{background-color:#2C3E50;color:#fff;margin-bottom:0;border-top:dashed;border-top-color:#2C3E50;border-bottom:dashed;border-bottom-color:#ECF0F1;border-left:none;border-right:none;margin-top:0;padding-top:3rem;}.dcshead{font-style:normal;font-weight:bold;padding-top:5rem;padding-bottom:1rem;margin-bottom:0;}.headerbutton{font-weight:bold;padding-left:4rem;padding-right:4rem;padding-top:1rem;padding-bottom:1rem;border:solid;border-color:#2C3E50;border-radius:5;background-color:#FEC009;color:#000000;text-decoration:none;}.headerbutton:hover{background-color:#222222;color:#FEC009;border-color:#FEC009;text-decoration:none;}.headerbutton:active:focus{text-decoration:none;background-color:#6DC33C;}.card{box-shadow:0px 0px 32px 0 rgba(0,0,0,0.2);transition: 0.3s;max-width:600px;width:100%;border-radius:5px;margin-bottom:5rem;cursor:pointer;}.card:hover{box-shadow: 0 0px 0px 0 rgba(0,0,0,0.2);border-style:solid;border-color:rgba(0,0,0,0.2);border-width:10px;}img{border-radius:5px 5px 0 0;padding:5rem;}
+  .card-container{
+    padding: 2px 16px;
+  }
+   .body-container{
+    margin-left: auto;
+        margin-right: auto;
+        text-align: justify;
+        margin-left: auto;
+        margin-right: auto;
+        max-width: 1080px;
+        width: 100%;
+        margin-top: 5rem;
+  }
+  .footer{
+    background-color: #191919;
+    padding-bottom: 3rem;
+    padding-left: 3rem;
+    padding-top: 3rem;
+    padding-right: 3rem;
+    text-align: center;
+  }
+  .footer a{
+    color: #E92E49;
+    text-decoration: none;
+  }
+  .section-1{
+    background-color: #ECF0F1;
+    padding-top: 1rem;
+    margin: 0;
+  }
+  .section-2{
+    background-color: #2C3E50;
+    padding-top: 5rem;
+    padding-bottom: 1rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    color: #fff;
+  }
+  .navbar-right{
+    padding-right: 2rem;
+  }
+  .modal-button{
+    font-weight: bold;
+    padding-left: 4rem;
+    padding-right: 4rem;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    border-radius: 5px;
+    border-style: solid;
+    border-width: 0px;
+    background-color: #000000;
+    color: #FEC009;
+    border-color: #000000;
+    text-decoration: none;
+  }
+  .modal-button:hover{
+    background-color: #FEC009;
+    color: #000000;
+    text-decoration: none;
+  }
+  .col-centered{
+    float: middle;
+  }
+  .steps-container{
+    margin-top: 0;
+    padding-top: 5rem;
+    padding-bottom: 3rem;
+    margin-bottom: 0;
+  }
+  .panel-default>.panel-heading1{
+    background-color: #2C3E50;
+    color: #ffffff;
+  }
+  .panel-default>.panel-heading2{
+    background-color: #D9534F;
+    color: #ffffff;
+  }
+  .panel-default>.panel-heading3{
+    background-color: #F0AD4E;
+    color: #ffffff;
+  }
+  .panel-default>.panel-heading4{
+    background-color: #5BC0DE;
+    color: #ffffff;
+  }
+  .panel-default>.panel-heading5{
+    background-color: #5CB85C;
+    color: #ffffff;
+  }
+  .btn{
+    background-color: #2C3E50;
+    color: #ffffff;
+    border: none;
+  }
+  .panel-footer{
+    margin-top: 1rem;
+  }
+  .error{
+    color:#ff1111;
+  }
+  .error-msg{
+    padding-top: 1rem;
+  }
+
+</style>
+
+<!-- Style Sheet Ends -->
+</head>
+<body cz-shortcut-listen="true">
+
+<div class="navbar navbar-inverse navbar-fixed-top">
+<div class="navbar-header"><a class="navbar-brand"><b>DIGITAL CERTIFICATE SIGNER</b></a>
+      <a class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </a>
+    </div>
+    <div class="navbar-collapse collapse">
+      <ul class="nav navbar-nav navbar-right">
+        <li class="active"><a href="index.html"><span class="glyphicon glyphicon-home"></span> Home</a></li>
+        <li><a href="about.html"><span class="glyphicon glyphicon-info-sign"></span> About</a></li>
+        <li><a href="signer.html"><span class="glyphicon glyphicon-ok-circle"></span> Signer</a></li>
+      </ul>
+    </div>
+</div>
+
+<!-- Error Message Begins-->
+    <h2 id="digest_error" class="error" style="display:none;">
+        ERROR: Your browser is not compatible with this website (this website
+        needs WebCryptoAPI's crypto.subtle.digest()). Please upgrade to a modern
+        browser (Firefox, Chrome, Safari, IE 11+).
+    </h2>
+<!-- Error Message Ends-->
+
+
+<div class="jumbotron text-center">
+  <h1 class="dcshead"><b>GENERATE FREE SSL!</b></h1>
+  <h3><b>follow the instructions before proceeding!</b></h3>
+  <a href="repository/DigitalCertificateSigner.zip" class="btn btn-info headerbutton" role="button"><span class="glyphicon glyphicon-cloud-download"></span>&nbsp;Download DCS Client UI</a>
+</div>
+
+
+
+
+
+
+
+<!-- Accordion Begins-->
+<div class="container">
+<h4 align="center">NOTE: Do not refresh your browser window until all steps done.</h4>
+  <div class="panel-group" id="accordion">
+ <!-- Account Validation Begin-->
+    <div class="panel panel-default">
+      <div class="panel-heading panel-heading1">
+        <h4 class="panel-title">
+          <a data-toggle="collapse" data-parent="#accordion" href="#collapse1" style="text-decoration:none">
+          Step 1: Account Validation</a>
+        </h4>
+      </div>
+      <div id="collapse1" class="panel-collapse collapse in">
+        <div class="panel-body">
+    <div>
+        You need to register a valid email address along with the public key provided by DCS Application. So that we can send you an alert if your SSL needs to be renew / revoke / reset 15 days before the SSL gets expired.
+    </div>
+    <br>
+    <div class="field">
+        <label for="email">Account Email:</label><br>
+        <input id="email" type="text" placeholder="(e.g. webmaster@yourdomain.com)" class="form-control">
+    </div>
+<br>
+    <div class="field">
+        <label for="pubkey">Account Public Key:</label><br>
+        <textarea id="pubkey" placeholder="-----BEGIN PUBLIC KEY----- ..." class="form-control" rows="5"></textarea>
+    </div><br>
+        <div class="field">
+            <input id="validate_account" type="submit" value="Validate Account Info" class="btn btn-success">
+                <div class="error-msg">
+                    <span id="validate_account_status" style="display:none;" class="error-msg"></span>
+                </div>
+        </div>
+    <div class="well">
+    How to generate a new account keypair using openssl:<br/>
+            <ol>
+                <li>
+                    Generate an account private key if you don't have one:<br/>
+                    (KEEP ACCOUNT.KEY SECRET!)<br/>
+                    <code>openssl genrsa 4096 > account.key</code>
+                </li>
+                <li>
+                    Print your public key:<br/>
+                    <code>openssl rsa -in account.key -pubout</code>
+                </li>
+                <li>
+                    Copy and paste the public key into the box below.
+                </li>
+            </ol>
+    </div>
+    </div>
+  </div>
+ </div>
+
+ <!-- Account Validation Ends-->
+
+
+ <!-- CSR Begin-->
+ <div class="panel panel-default">
+      <div class="panel-heading panel-heading2">
+        <h4 class="panel-title">
+          <a data-toggle="collapse" data-parent="#accordion" href="#collapse2" style="text-decoration:none">
+          Step 2: Certificate Signing Request</a>
+        </h4>
+      </div>
+      <div id="collapse2" class="panel-collapse collapse">
+        <div class="panel-body">
+    <div>
+        This is the certificate signing request (CSR) that you send to Let's Encrypt
+        in order to issue you a signed certificate. It contains the website domains you
+        want to issue certs for and the public key of your TLS private key. <i><b>Keep your
+        TLS private key secret!</b> Anyone who has it can man-in-the-middle your website!</i>
+    </div>
+    <br>
+    <div class="field">
+        <label for="csr">Certificate Signing Request:</label><br>
+        <textarea id="csr" placeholder="-----BEGIN CERTIFICATE REQUEST----- ..." class="form-control" rows="5"></textarea>
+    </div>
+    <br>
+    <div class="field">
+        <input id="validate_csr" type="submit" value="Validate CSR" class="btn btn-success">
+        <br><br>
+        <span id="validate_csr_status" style="display:none;"></span>
+    </div>
+    <div class="well">
+        How to generate a new Certificate Signing Request (CSR):<br/>
+            <ol>
+                <li>
+                    Generate a TLS private key if you don't have one:<br/>
+                    (KEEP DOMAIN.KEY SECRET!)<br/>
+                    <code>openssl genrsa 4096 > domain.key</code>
+                </li>
+                <li>
+                    Generate a CSR for your the domains you want certs for:</br>
+                    (replace "example.com" with your domain)</br>
+                    Linux:
+                    <pre>
+#change "/etc/ssl/openssl.cnf" as needed:
+#  Debian: /etc/ssl/openssl.cnf
+#  RHEL and CentOS: /etc/pki/tls/openssl.cnf
+#  Mac OSX: /System/Library/OpenSSL/openssl.cnf
+
+openssl req -new -sha256 -key domain.key -subj "/" \
+  -reqexts SAN -config &lt;(cat /etc/ssl/openssl.cnf \
+  &lt;(printf "[SAN]\nsubjectAltName=DNS:example.com,DNS:www.example.com"))
+</pre>
+                </li>
+                <li>
+                    Copy and paste the CSR into the box below.<br/>
+                </li>
+            </ol>
+    </div>
+    </div>
+  </div>
+  </div>
+
+<!-- CSR Ends-->
+
+<!-- Sign API Requests Begins-->
+ <div class="panel panel-default">
+      <div class="panel-heading panel-heading3">
+        <h4 class="panel-title">
+          <a data-toggle="collapse" data-parent="#accordion" href="#collapse3" style="text-decoration:none">
+          Step 3: Sign API Requests <span id="step3_pending">(waiting..)</span></a>
+        </h4>
+      </div>
+      <div id="collapse3" class="panel-collapse collapse">
+        <div class="panel-body">
+<div id="step3" style="display:none;">
+    <div>
+        Let's Encrypt requires that you sign all of your requests to them with your
+        account private key. Below are the requests that you will need to sign. The
+        commands to do this are generated below so you can copy-and-paste them into your
+        terminal. <i>Be sure to change the account private key location so it points to
+        your real private key.</i>
+    </div>
+    <br>
+    <div class="field">
+        <label>Run these signature commands in DCSUI or your command terminal:</label><br/>
+        <span id="step3_commands">
+        </span>
+        <span id="signing_template" style="display:none;">
+            <input type="text" value="echo ..." readonly/ class="form-control">
+            <input id="challenge_sig_foobar_com" type="text" placeholder='Paste the hex output here (e.g. "(stdin)= f2cf67e4...")'/ class="form-control"><br/>
+        </span>
+    </div>
+
+    <div class="field">
+            <input id="validate_initial_sigs" type="submit" value="Validate Signatures" class="btn btn-success" />
+            <br><br>
+            <span id="validate_initial_sigs_status" style="display:none;"></span>
+    </div>
+    </div>
+  </div>
+</div>
+
+<!-- Sign API Requests Ends -->
+</div>
+
+
+
+<!-- Verifying Ownership Begin-->
+ <div class="panel panel-default">
+      <div class="panel-heading panel-heading4">
+        <h4 class="panel-title">
+          <a data-toggle="collapse" data-parent="#accordion" href="#collapse4" style="text-decoration:none">
+          Step 4: Verifying Ownership<span id="step4_pending"> (waiting..)</span></a>
+        </h4>
+      </div>
+      <div id="collapse4" class="panel-collapse collapse">
+        <div class="panel-body">
+        <div id="step4" style="display: none;">
+    <div>
+        <p align="justify">DCS requires you to prove that you own the domains you have in your CSR. You can do this by serving a specific file at a specific url under your domains. Below are the files you need to serve along with some copy-and-paste commands you can run on your website to start serving the file. Once you are serving the file on your website, click "I'm now running this on...". After that, you need to tell DCS Server to check the above files to verify ownership of your domains. This request needs to be signed with your account private key. Below are the verification requests that you will need to sign. The commands to do this are generated below so you can copy-and-paste them into your terminal. Be sure to change the account private key location so it points to your real private key.</p>
+    </div>
+    <br>
+    <ul class="nav nav-tabs">
+    <li class="active"><a data-toggle="tab" href="#home">Python Server</a></li>
+    <li><a data-toggle="tab" href="#menu1">File-Based</a></li>
+  </ul>
+
+  <div class="tab-content">
+    <div id="home" class="tab-pane fade in active">
+      <h3>Verify Using Python Server</h3>
+          <label>Run this command on <span class="domain">DCS</span>'s UI Application:</label><br/>
+                    <textarea readonly class="form-control" rows="5"></textarea>
+<br>
+  <div>
+      <input type="submit" value="I'm now running this command on my website" class="btn btn-success"/>
+      <span style="display:none;"></span>
+  </div>
+  <br>
+          <div class="well">
+        <b>How to serve the challenge response on your domain:</b><br/><br>
+                        <ol>
+                            <li>
+                                SSH into your domain as someone with sudo permissions:<br/>
+                                <code class="ssh">ssh ubuntu@example.com</code>
+                            </li>
+                            <li>
+                                Stop any webserver running on port 80, if any. If you had previously
+                                been running another python command, you can kill it with Ctrl+C):<br/>
+                                <code>sudo service nginx stop</code> &lt;-- example for nginx<br/>
+                                <code>sudo apachectl -k graceful-stop</code> &lt;-- example for apache
+                            </li>
+                            <li>
+                                Copy and paste the python command below into your terminal. This
+                                command starts a temporary webserver that serves nothing but the
+                                challenge response. You only need to keep this running briefly.
+                            </li>
+                            <li>
+                                Open the link in a new window to make sure it's working:<br/>
+                                <a target="_blank"></a>
+                            </li>
+                            <li>
+                                Click "I'm now running this command..." button when the file is being
+                                served on your domain.
+                            </li>
+                        </ol>
+
+  </div>
+    </div>
+    <div id="menu1" class="tab-pane fade">
+      <h3>Verify With File-based Explorer</h3>
+      <label>Under this url:</label><br/>
+                    <input type="text" class="file_url form-control" value="" readonly />
+                    <br>
+                    <div>
+                        <label>Serve this content:</label>
+                        <input type="text" class="file_data form-control" value="" readonly/>
+                    </div>
+                    <br>
+                    <div>
+                        <input type="submit" class="file_submit btn btn-success" value="I'm now serving this file on example.com"/>
+                        <span style="display:none;"></span>
+                    </div>
+                    <br>
+<div class="well">
+        <b>How to host this file on your server:</b><br/><br>
+                        <ol>
+                            <li>
+                                SSH into your domain as someone with write access to
+                                your static web directory:<br/>
+                                <pre class="ssh">ssh ubuntu@example.com</pre>
+                            </li>
+                            <li>
+                                Create the ".well-known/acme-challenge/" directory
+                                in your webserver's static file path:<br/>
+                                <pre class="wwwdir">mkdir -p /path/to/www/.well-known/acme-challenge/</pre>
+                            </li>
+                            <li>
+                                Add the static folder to your webserver's config
+                                (if you haven't already):<br/>
+                                <pre class="nginx_location">server {...</pre>
+                            </li>
+                            <li>
+                                Create the file with the necessary contents:<br/>
+                                <pre class="file_cmd">echo ...</pre>
+                            </li>
+                            <li>
+                                Open the link in a new window to make sure it's working:<br/>
+                                <a target="_blank"></a>
+                            </li>
+                            <li>
+                                Click "I'm now serving this file..." button when the file is being
+                                served on your domain.
+                            </li>
+                        </ol>
+
+  </div>
+      </div>
+  </div>
+    </div>
+  </div>
+  </div>
+  </div>
+
+<!-- Verifying Ownership Ends-->
+
+
+<!-- Certificate Installation Begins -->
+
+ <div class="panel panel-default">
+      <div class="panel-heading panel-heading5">
+        <h4 class="panel-title">
+          <a data-toggle="collapse" data-parent="#accordion" href="#collapse5" style="text-decoration:none">
+          Step 5: Certificate Installation <span id="step5_pending">(waiting..)</span></a>
+        </h4>
+      </div>
+      <div id="collapse5" class="panel-collapse collapse">
+        <div class="panel-body">
+<div id="step3" style="display:none;">
+    <div>
+            Congratulations! <b>DigitalCertificateSigner.com</b> has issued you a certificate for your domain(s)!
+            Below is the signed certificate you can use for your website and or application.
+        </div>
+        <br>
+         <label for="csr">Signed Certificate:</label><br/>
+            <textarea id="crt" readonly class="form-control" rows="10"></textarea>
+            <br>
+                    <div class="field">
+            <label for="csr">Intermediate Certificate:</label><br/>
+<textarea readonly class="form-control" rows="10">
+-----BEGIN CERTIFICATE-----
+MIIEkjCCA3qgAwIBAgIQCgFBQgAAAVOFc2oLheynCDANBgkqhkiG9w0BAQsFADA/
+MSQwIgYDVQQKExtEaWdpdGFsIFNpZ25hdHVyZSBUcnVzdCBDby4xFzAVBgNVBAMT
+DkRTVCBSb290IENBIFgzMB4XDTE2MDMxNzE2NDA0NloXDTIxMDMxNzE2NDA0Nlow
+SjELMAkGA1UEBhMCVVMxFjAUBgNVBAoTDUxldCdzIEVuY3J5cHQxIzAhBgNVBAMT
+GkxldCdzIEVuY3J5cHQgQXV0aG9yaXR5IFgzMIIBIjANBgkqhkiG9w0BAQEFAAOC
+AQ8AMIIBCgKCAQEAnNMM8FrlLke3cl03g7NoYzDq1zUmGSXhvb418XCSL7e4S0EF
+q6meNQhY7LEqxGiHC6PjdeTm86dicbp5gWAf15Gan/PQeGdxyGkOlZHP/uaZ6WA8
+SMx+yk13EiSdRxta67nsHjcAHJyse6cF6s5K671B5TaYucv9bTyWaN8jKkKQDIZ0
+Z8h/pZq4UmEUEz9l6YKHy9v6Dlb2honzhT+Xhq+w3Brvaw2VFn3EK6BlspkENnWA
+a6xK8xuQSXgvopZPKiAlKQTGdMDQMc2PMTiVFrqoM7hD8bEfwzB/onkxEz0tNvjj
+/PIzark5McWvxI0NHWQWM6r6hCm21AvA2H3DkwIDAQABo4IBfTCCAXkwEgYDVR0T
+AQH/BAgwBgEB/wIBADAOBgNVHQ8BAf8EBAMCAYYwfwYIKwYBBQUHAQEEczBxMDIG
+CCsGAQUFBzABhiZodHRwOi8vaXNyZy50cnVzdGlkLm9jc3AuaWRlbnRydXN0LmNv
+bTA7BggrBgEFBQcwAoYvaHR0cDovL2FwcHMuaWRlbnRydXN0LmNvbS9yb290cy9k
+c3Ryb290Y2F4My5wN2MwHwYDVR0jBBgwFoAUxKexpHsscfrb4UuQdf/EFWCFiRAw
+VAYDVR0gBE0wSzAIBgZngQwBAgEwPwYLKwYBBAGC3xMBAQEwMDAuBggrBgEFBQcC
+ARYiaHR0cDovL2Nwcy5yb290LXgxLmxldHNlbmNyeXB0Lm9yZzA8BgNVHR8ENTAz
+MDGgL6AthitodHRwOi8vY3JsLmlkZW50cnVzdC5jb20vRFNUUk9PVENBWDNDUkwu
+Y3JsMB0GA1UdDgQWBBSoSmpjBH3duubRObemRWXv86jsoTANBgkqhkiG9w0BAQsF
+AAOCAQEA3TPXEfNjWDjdGBX7CVW+dla5cEilaUcne8IkCJLxWh9KEik3JHRRHGJo
+uM2VcGfl96S8TihRzZvoroed6ti6WqEBmtzw3Wodatg+VyOeph4EYpr/1wXKtx8/
+wApIvJSwtmVi4MFU5aMqrSDE6ea73Mj2tcMyo5jMd6jmeWUHK8so/joWUoHOUgwu
+X4Po1QYz+3dszkDqMp4fklxBwXRsW10KXzPMTZ+sOPAveyxindmjkW8lGy+QsRlG
+PfZ+G6Z6h7mjem0Y+iWlkYcV4PIWL1iwBi8saCbGS5jN2p8M+X+Q7UNKEkROb3N6
+KOqkqm57TH2H3eDJAkSnh6/DNFu0Qg==
+-----END CERTIFICATE-----
+</textarea>
+        </div>
+<br>
+        <div class="field">
+            <form action="https://www.ssllabs.com/ssltest/analyze.html" target="_blank">
+                <input id="ssltest_domain" type="hidden" name="d" value="example.com">
+                <input type="submit" value="Test my install" class="btn btn-success" />
+            </form>
+        </div>
+<br>
+<div class="well">
+  <div class="field">
+<b>How do I install it?</b>
+            <div class="help-content">
+                Nginx installation instructions:<br/>
+                <ol>
+                    <li>
+                        Copy and paste both the below domain certificate and the below
+                        intermediate certificate into the same text file called "chained.pem".
+                    </li>
+                    <li>
+                        If not done already, generate non-default dhparams.<br/>
+                        <code>openssl dhparam -out dhparam.pem 4096</code>
+                    </li>
+                    <li>
+                        Copy "chained.pem" and "dhparam.pem" to /etc/ssl/certs/.<br/>
+                        <pre>
+scp chained.pem root@example.com:/etc/ssl/certs/chained.pem
+scp dhparam.pem root@example.com:/etc/ssl/certs/dhparam.pem
+</pre>
+                    </li>
+                    <li>
+                        Copy "domain.key" /etc/ssl/private/.<br/>
+                        <code>scp domain.key root@example.com:/etc/ssl/private/domain.key</code><br/>
+                    </li>
+                    <li>
+                        Update your webserver config to use https (examples below).<br/>
+<pre>
+server {
+    listen 443;
+    server_name example.com;
+    ssl on;
+    ssl_certificate /etc/ssl/certs/chained.pem;
+    ssl_certificate_key /etc/ssl/private/domain.key;
+    ssl_session_timeout 5m;
+    ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
+    ssl_ciphers ECDHE-RSA-AES256-GCM-SHA384:ECDHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-SHA384:ECDHE-RSA-AES128-SHA256:ECDHE-RSA-AES256-SHA:ECDHE-RSA-AES128-SHA:DHE-RSA-AES256-SHA:DHE-RSA-AES128-SHA;
+    ssl_session_cache shared:SSL:50m;
+    ssl_dhparam /etc/ssl/certs/dhparam.pem;
+    ssl_prefer_server_ciphers on;
+
+    location / {
+        return 200 'Hello world!';
+        add_header Content-Type text/plain;
+    }
+}
+</pre>
+                    </li>
+                </ol>
+                Apache installation instructions:<br/>
+                <ol>
+                    <li>
+                        Copy and paste the below domain certificate into file "domain.crt".
+                    </li>
+                    <li>
+                        Copy and paste the below intermediate certificate into file "intermediate.pem".
+                    </li>
+                    <li>
+                        Copy "domain.crt" and "intermediate.pem" to /etc/ssl/certs/.<br/>
+                        <pre>
+scp domain.crt root@example.com:/etc/ssl/certs/domain.crt
+scp intermediate.pem root@example.com:/etc/ssl/certs/intermediate.pem
+</pre>
+                    </li>
+                    <li>
+                        Copy "domain.key" /etc/ssl/private/.<br/>
+                        <code>scp domain.key root@example.com:/etc/ssl/private/domain.key</code><br/>
+                    </li>
+                    <li>
+                        Update your webserver config to use https (examples below).<br/>
+<pre>
+&lt;VirtualHost _default_:443&gt;
+        ServerName example.com:443
+        ServerAlias www.example.com
+        DocumentRoot /var/www/example.com/html
+        SSLEngine on
+        SSLCertificateFile    /etc/ssl/certs/domain.crt
+        SSLCertificateKeyFile /etc/ssl/private/domain.key
+        SSLCertificateChainFile /etc/ssl/certs/intermediate.pem
+        SSLProtocol all -SSLv2 -SSLv3
+        SSLCipherSuite ECDHE-RSA-AES256-GCM-SHA384:ECDHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-SHA384:ECDHE-RSA-AES128-SHA256:ECDHE-RSA-AES256-SHA:ECDHE-RSA-AES128-SHA:DHE-RSA-AES256-SHA:DHE-RSA-AES128-SHA;
+        SSLHonorCipherOrder on
+        &lt;Directory /var/www/example.com/html&gt;
+                Options Indexes FollowSymLinks MultiViews
+                AllowOverride All
+                Order allow,deny
+                allow from all
+        &lt;/Directory&gt;
+&lt;/VirtualHost&gt;
+</pre>
+                    </li>
+                </ol>
+            </div>
+        </div>
+</div>
+    </div>
+  </div>
+</div>
+</div>
+<!-- Certificate Installation Ends-->
+
+
+
+		</div>
+	
+	</div>
+
+</div>
+<!-- Accordion Ends-->
+
+
+<!--Footer Begins-->
+<footer class="footer">
+      <p class="text-muted">&copy; 2017. <b>DigitalCertificateSigner.com</b>.&nbsp;An <b>ACME</b> based project. Developed Under MIT License and DMCA.&nbsp;<b>Let's Encrypt</b> is a trademark of Internet Security Research Group (ISRG).<br></p>
+
+<table align="center">
+          <tr>
+           <td>
+            <div id="a" class="text-muted">Made with&nbsp;</div>
+           </td>
+           <td>
+             <div id="heart" class="heart pulse2"><span class="glyphicon glyphicon-heart"></span></div>
+           </td>
+           <td>
+            <div id="b" class="text-muted">&nbsp;by <b>Kirubhakaran Aachari</b></div>
+           </td>
+          </tr>
+         </table>
+
+</footer>
+<!--Footer Ends-->
+<script src="js/index.js"></script>
+</body></html>

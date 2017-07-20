@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>Digital Certificate Signer</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="shortcut icon" type="image/ico" href="assets/img/favicon.ico">
+  	<link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="assets/animation/heart.css">
+  	<script src="assets/google/jquery.min.js"></script>
+  	<script src="assets/bootstrap/js/bootstrap.min.js"></script>
+</head>
+<!--#########################-->
+<!--##  Stylesheet Begins  ##-->
+<!--#########################-->
+<style type="text/css">html::-webkit-scrollbar{display:none;}
+	body{
+    font-family: 'Century Gothic', sans-serif;
+		height: 100%;
+    width: 100%;
+	}
+	.navbar{
+		border-radius: 0;
+		margin: 0;
+    border-bottom: dashed;
+    background-color: #FFFFFF;
+	}
+  .navbar-inverse .navbar-brand{
+    color: #2C3E50;
+    text-shadow: 0px 0px 8px 0 rgba(0,0,0,0.2);
+  }
+  .navbar-inverse .navbar-brand:hover{
+    color: #2C3E50;
+    cursor: pointer;
+  }
+  .navbar-inverse .navbar-nav>li>a{
+    color: #2C3E50;
+  }
+  .navbar-inverse .navbar-nav>li>a:hover{
+    color: #34495E;
+  }
+  .navbar-inverse .navbar-nav>.active>a,
+  .navbar-inverse .navbar-nav>.active>a:focus,
+  .navbar-inverse .navbar-nav>.active>a:hover{
+    color: #4EDFC2;
+    background-color: #FFFFFF;
+  }
+  .navbar-inverse .navbar-collapse, .navbar-inverse .navbar-form{
+    border: none;
+  }
+  .navbar-inverse .navbar-toggle{
+    border: none;
+    background-color: #2C3E50;
+  }
+  .navbar-inverse .navbar-toggle:hover{
+    border: none;
+    background-color: #34495E;
+    cursor: pointer;
+  }
+	.jumbotron{
+    background-color: #2C3E50;
+	  color: #fff;
+	  margin-bottom: 0;
+    border-top: dashed;
+    border-top-color: #2C3E50;
+    border-bottom: dashed;
+    border-bottom-color: #ECF0F1;
+    border-left: none;
+    border-right: none;
+	}
+	.dcshead{
+		font-style: normal;
+    font-weight: bold;
+    padding-top: 5rem;
+    padding-bottom: 0;
+	}
+	.blockquote{
+		background-color: #34495E;
+    color: #ffffff;
+    font-size: 16px;
+    font-weight: lighter;
+		margin-left: auto;
+		margin-right: auto;
+		text-align: justify;
+		margin-left: auto;
+		margin-right: auto;
+		max-width: 1080px;
+		width: 100%;
+    border-top: dotted;
+    border-top-color: #2C3E50;
+    border-bottom: dotted;
+    border-bottom-color: #2C3E50;
+    border-right: dotted;
+    border-right-color: #2C3E50;
+	}
+	.headerbutton{
+		font-weight: bold;
+		padding-left: 4rem;
+		padding-right: 4rem;
+		padding-top: 1rem;
+		padding-bottom: 1rem;
+		border: dotted;
+    border-color: #2C3E50;
+    border-radius: 0;
+		background-color: #FEC009;
+		color: #000000;
+		text-decoration: none;
+	}
+	.headerbutton:hover{
+		background-color: #222222;
+		color: #FEC009;
+		border-color: #FEC009;
+		text-decoration: none;
+	}
+	.headerbutton:active:focus{
+		text-decoration: none;
+		background-color: #6DC33C;
+	}
+	.card{
+    	box-shadow: 0px 0px 32px 0 rgba(0,0,0,0.2);
+    	transition: 0.3s;
+    	max-width: 600px;
+    	width: 100%;
+    	border-radius: 5px;
+    	margin-bottom: 3rem;
+      cursor: pointer;
+	}
+	.card:hover{
+    	box-shadow: 0 0px 0px 0 rgba(0,0,0,0.2);
+      border-style: solid;
+      border-color: rgba(0,0,0,0.2);
+      border-width: 10px;
+	}
+  img {
+    border-radius: 5px 5px 0 0;
+    padding: 5rem;
+  }
+  .card-container{
+   	padding: 2px 16px;
+  }
+   .body-container{
+   	margin-left: auto;
+		margin-right: auto;
+		text-align: justify;
+		margin-left: auto;
+		margin-right: auto;
+		max-width: 1080px;
+		width: 100%;
+		margin-top: 5rem;
+  }
+  .footer{
+    background-color: #191919;
+    padding-bottom: 3rem;
+    padding-left: 3rem;
+    padding-top: 3rem;
+    padding-right: 3rem;
+    text-align: center;
+  }
+  .footer a{
+    color: #E92E49;
+    text-decoration: none;
+  }
+  .footer-widget-area{
+    background-color: #1b1b1b;
+    padding-top: 5rem;
+    padding-bottom: 5rem;
+    padding-left: 5rem;
+    padding-right: 5rem;
+    margin-bottom: 0;
+    margin-left: 0;
+    margin-right: 0;
+    margin-top: 0;
+    text-align: center;
+    color: #777777;
+  }
+  .footer-widget-area a{
+    color: #E92E49;
+    text-decoration: none;
+  }
+  .footer-widget{
+    border-style: solid;
+		border-width: 3px;
+		border-color: #333333;
+		border-radius: 15px;
+    }
+  .footer-widget-container{
+    padding: 2px 2px;
+    margin-bottom: 0;
+    margin-left: 0;
+    margin-right: 0;
+    margin-top: 0;
+  }
+  .section-1{
+    background-color: #ECF0F1;
+    padding-top: 1rem;
+    margin-top: 0;
+  }
+  .navbar-right{
+    padding-right: 2rem;
+  }
+  .modal-button{
+    font-weight: bold;
+    padding-left: 4rem;
+    padding-right: 4rem;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    border-radius: 5px;
+    border-style: solid;
+    border-width: 0px;
+    background-color: #000000;
+    color: #FEC009;
+    border-color: #000000;
+    text-decoration: none;
+  }
+  .modal-button:hover{
+    background-color: #FEC009;
+    color: #000000;
+    text-decoration: none;
+  }
+  .col-centered{
+    float: middle;
+  }
+</style>
+<!--#######################-->
+<!--##  Stylesheet Ends  ##-->
+<!--#######################-->
+<body>
+<div class="navbar navbar-inverse navbar-fixed-top">
+<div class="navbar-header"><a class="navbar-brand"><b>DIGITAL CERTIFICATE SIGNER</b></a>
+      <a class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </a>
+    </div>
+    <div class="navbar-collapse collapse">
+      <ul class="nav navbar-nav navbar-right">
+        <li class="active"><a href="index.html"><span class="glyphicon glyphicon-home"></span> Home</a></li>
+        <li><a href="about.html"><span class="glyphicon glyphicon-info-sign"></span> About</a></li>
+        <li><a href="signer.html"><span class="glyphicon glyphicon-ok-circle"></span> Signer</a></li>
+      </ul>
+    </div>
+</div>
+<div class="jumbotron text-center">
+  <h1 class="dcshead"><b>Free SSL</b></h1>
+  <h1 class="dcshead"><b>In just 5 min!</b></h1>
+  <h1 class="dcshead"><b>One Click Installation</b></h1><br>
+  <a href="signer.html" class="btn btn-info headerbutton" role="button">Click Here to Start <span class="glyphicon glyphicon-chevron-right"></span></a>
+</div>
+
+<!--Footer Begins-->
+<footer class="footer">
+    	<p class="text-muted">&copy; 2017. <b>DigitalCertificateSigner.com</b>.&nbsp;An <b>ACME</b> based project. Developed Under MIT License and DMCA.&nbsp;<b>Let's Encrypt</b> is a trademark of Internet Security Research Group (ISRG).<br></p>
+
+<table align="center">
+          <tr>
+           <td>
+            <div id="a" class="text-muted">Made with&nbsp;</div>
+           </td>
+           <td>
+             <div id="heart" class="heart pulse2"><span class="glyphicon glyphicon-heart"></span></div>
+           </td>
+           <td>
+            <div id="b" class="text-muted">&nbsp;by <b>Kirubhakaran Aachari</b></div>
+           </td>
+          </tr>
+         </table>
+
+</footer>
+<!--Footer Ends-->
+</body>
+</html>
